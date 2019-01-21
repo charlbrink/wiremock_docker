@@ -1,0 +1,51 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: {{ name }}
+spec:
+    selector:
+      app: {{ name }}
+    ports:
+    - name: {{ name }}-http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+    type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ name }}
+  labels:
+    app: {{ name }}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ name }}
+    spec:
+      containers:
+        - name: {{ name }}
+          image: dsl.melexis.com:5000/wiremock/wiremock:{{ version }}
+          imagePullPolicy: Always
+          ports:
+            - 
+              containerPort: 8080
+              name: {{ name }}-http
+          command:
+            - "/app/wiremock_run.sh"
+          resources:
+            requests:
+              memory: 256Mi
+            limits:
+              memory: 512Mi
+          livenessProbe:
+            httpGet:
+              path: /__admin/docs/
+              port: {{ name }}-http
+            initialDelaySeconds: 180
+            timeoutSeconds: 60
+            periodSeconds: 120
+
