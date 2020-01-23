@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
         - name: {{ name }}
-          image: charlbrink/wiremock/wiremock:{{ version }}
+          image: charlbrink/wiremock:{{ version }}
           imagePullPolicy: Always
           ports:
             - 
