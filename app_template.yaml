@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
         - name: {{ name }}
-          image: dsl.melexis.com:5000/wiremock/wiremock:{{ version }}
+          image: charlbrink/wiremock/wiremock:{{ version }}
           imagePullPolicy: Always
           ports:
             - 
